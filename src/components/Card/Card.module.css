@@ -9,7 +9,7 @@
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
-h2 {
+.card h2 {
   font-size: 1.1rem;
 }
 
@@ -18,8 +18,21 @@ h2 {
   height: 50%;
 }
 
-img {
+.imgContainer img {
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+
+.quantity {
+  display: flex;
+  gap: 5px;
+}
+
+.quantity input {
+  width: 70%;
+}
+
+.addToCartBtn {
+  padding: .3rem 0;
 }
