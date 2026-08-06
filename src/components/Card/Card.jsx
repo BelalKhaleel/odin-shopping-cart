@@ -1,5 +1,6 @@
 import styles from "./Card.module.css";
 import { useState } from "react";
+import { useOutletContext } from "react-router";
 
 const Card = ({
   imgUrl,
@@ -12,10 +13,12 @@ const Card = ({
   description,
   rating,
   price,
+  quantity,
   onChange,
   onAddToCartBtnClick,
 }) => {
 
+  const { isShopping } = useOutletContext();
   const [value, setValue] = useState(0);
 
   const handleDecrementValueClick = () => {
@@ -43,12 +46,13 @@ const Card = ({
       <p>{description}</p>
       <span>Rating: {rating}</span>
       <span>Price: {price}</span>
+      {!isShopping && <span>Quantity: {quantity}</span>}
       <div className={styles.quantity}>
         <input
           type="number"
           min="0"
           placeholder="0"
-          value={value}
+          value={quantity ? quantity : value}
           onChange={onChange}
         ></input>
         <button type="button" onClick={handleDecrementValueClick}>
@@ -58,13 +62,13 @@ const Card = ({
           +
         </button>
       </div>
-      <button
+      {isShopping && <button
         type="button"
         className={styles.addToCartBtn}
         onClick={handleAddToCartClick}
       >
         Add to cart
-      </button>
+      </button>}
     </div>
   );
 };

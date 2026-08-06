@@ -12,7 +12,7 @@ const Navbar = ({ cartCount }) => {
           <Link to='/shop'>Shop</Link>
         </li>
         <li>
-          <Link to='/cart'>Cart{cartCount ? `(${cartCount})` : ''}</Link>
+          <Link to='/cart'>Cart {cartCount ? `(${cartCount})` : ''}</Link>
         </li>
       </ul>
     </nav>
