@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useOutletContext } from "react-router";
 import Card from "../../components/Card/Card";
 import styles from "./Shop.module.css";
 
@@ -7,6 +8,7 @@ const Shop = () => {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [cartCount, setCartCount] = useOutletContext();
 
   useEffect(() => {
     fetch("https://fakestoreapi.com/products")
@@ -21,16 +23,22 @@ const Shop = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  const handleAddToCartClick = (value, item) => {
-    if (value === 0) return;
-    if (cart.some(obj => obj.id === item.id)) {
-      const newCart = cart.map(product => product.id === item.id ? { ...product, quantity: value } : product);
+  const handleAddToCartClick = (quantity, item) => {
+    if (quantity <= 0) return;
+    if (cart.some((product) => product.id === item.id)) {
+      const newCart = cart.map((product) =>
+        product.id === item.id ? { ...product, quantity: quantity } : product,
+      );
       setCart(newCart);
     } else {
-      setCart([...cart, { ...item, quantity: value } ]);
+      setCart([...cart, { ...item, quantity: quantity }]);
     }
-  }
-
+  };
+  
+  const itemsInCart = cart.length;
+  setCartCount(itemsInCart);
+  console.table(cart);
+  console.log(cartCount)
   if (loading) return <p>Loading ...</p>;
 
   if (error) return <p>A network error was encountered</p>;
