@@ -3,9 +3,12 @@ import Card from "../../components/Card/Card";
 import styles from './Cart.module.css';
 
 const Cart = () => {
-  const { cart, setIsShopping } = useOutletContext();
+  const { cart, setIsShopping, setCartCount } = useOutletContext();
 
   setIsShopping(false);
+
+  const itemsInCart = cart.length;
+  setCartCount(itemsInCart);
   
   return (
     <>
