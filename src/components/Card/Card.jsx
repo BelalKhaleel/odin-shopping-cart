@@ -23,7 +23,7 @@ const Card = ({
   const { cart, setCart } = useOutletContext();
 
   const handleDecrementValueClick = (item) => {
-    if (cart.some((itemInCart) => itemInCart.id === item.id)) {
+    if (quantity) {
       const cartItem = cart.find((itemInCart) => itemInCart.id === item.id);
       const decrementedQuantity = cartItem.quantity - 1;
       if (decrementedQuantity === 0) {
@@ -74,7 +74,6 @@ const Card = ({
       <p>{description}</p>
       <span>Rating: {rating}</span>
       <span>Price: {price}</span>
-      {!isShopping && <span>Quantity: {quantity}</span>}
       <div className={styles.quantity}>
         <input
           type="number"
