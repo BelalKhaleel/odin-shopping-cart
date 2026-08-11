@@ -3,7 +3,7 @@ import Card from "../../components/Card/Card";
 import styles from './Cart.module.css';
 
 const Cart = () => {
-  const { cart, setIsShopping, setCartCount } = useOutletContext();
+  const { cart, setCart, isShopping, setIsShopping, setCartCount } = useOutletContext();
 
   setIsShopping(false);
 
@@ -27,6 +27,9 @@ const Cart = () => {
               rating={item.rating.rate}
               price={item.price}
               quantity={item.quantity}
+              cart={cart}
+              editCart={setCart}
+              isShopping={isShopping}
             />
           ))}
       </div>

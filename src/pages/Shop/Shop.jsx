@@ -7,7 +7,7 @@ const Shop = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { cart, setCart, cartCount, setCartCount, setIsShopping } =
+  const { cart, setCart, setCartCount, isShopping, setIsShopping } =
     useOutletContext();
 
   setIsShopping(true);
@@ -39,8 +39,6 @@ const Shop = () => {
 
   const itemsInCart = cart.length;
   setCartCount(itemsInCart);
-  console.table(cart);
-  console.log(cartCount);
 
   if (loading) return <p>Loading ...</p>;
 
@@ -68,7 +66,8 @@ const Shop = () => {
                   rating={cartItem.rating.rate}
                   price={cartItem.price}
                   quantity={cartItem.quantity}
-                  onAddToCartBtnClick={handleAddToCartClick}
+                  cart={cart}
+                  editCart={setCart}
                 />
               );
             } else {
@@ -83,6 +82,9 @@ const Shop = () => {
                   // description={item.description}
                   rating={item.rating.rate}
                   price={item.price}
+                  cart={cart}
+                  editCart={setCart}
+                  isShopping={isShopping}
                   onAddToCartBtnClick={handleAddToCartClick}
                 />
               );
