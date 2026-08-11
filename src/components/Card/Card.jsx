@@ -1,6 +1,5 @@
-import styles from "./Card.module.css";
 import { useState } from "react";
-import { useOutletContext } from "react-router";
+import styles from "./Card.module.css";
 
 const Card = ({
   imgUrl,
@@ -15,12 +14,12 @@ const Card = ({
   price,
   quantity,
   // onChange,
+  cart,
+  editCart,
+  isShopping,
   onAddToCartBtnClick,
 }) => {
-  const { isShopping } = useOutletContext();
   const [value, setValue] = useState(0);
-
-  const { cart, setCart } = useOutletContext();
 
   const handleDecrementValueClick = (item) => {
     if (quantity) {
@@ -28,14 +27,14 @@ const Card = ({
       const decrementedQuantity = cartItem.quantity - 1;
       if (decrementedQuantity === 0) {
         const newCart = cart.filter(item => item.id !== cartItem.id);
-        setCart(newCart);
+        editCart(newCart);
       } else {
         const newCart = cart.map((item) =>
           item.id === cartItem.id
             ? { ...cartItem, quantity: decrementedQuantity }
             : item,
         )
-        setCart(newCart);
+        editCart(newCart);
       }
     } else {
       if (value > 0) {
@@ -53,7 +52,7 @@ const Card = ({
           ? { ...cartItem, quantity: cartItem.quantity + 1 }
           : item,
       );
-      setCart(newCart);
+      editCart(newCart);
     } else {
       const newValue = value + 1;
       setValue(newValue);
