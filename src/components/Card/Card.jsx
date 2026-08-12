@@ -15,7 +15,7 @@ const Card = ({
   quantity,
   // onChange,
   cart,
-  editCart,
+  updateCart,
   isShopping,
   onAddToCartBtnClick,
 }) => {
@@ -27,14 +27,14 @@ const Card = ({
       const decrementedQuantity = cartItem.quantity - 1;
       if (decrementedQuantity === 0) {
         const newCart = cart.filter(item => item.id !== cartItem.id);
-        editCart(newCart);
+        updateCart(newCart);
       } else {
         const newCart = cart.map((item) =>
           item.id === cartItem.id
             ? { ...cartItem, quantity: decrementedQuantity }
             : item,
         )
-        editCart(newCart);
+        updateCart(newCart);
       }
     } else {
       if (value > 0) {
@@ -45,14 +45,14 @@ const Card = ({
   };
 
   const handleIncrementValueClick = (item) => {
-    if (cart.some((itemInCart) => itemInCart.id === item.id)) {
+    if (cart && cart.some((itemInCart) => itemInCart.id === item.id)) {
       const cartItem = cart.find((itemInCart) => itemInCart.id === item.id);
       const newCart = cart.map((item) =>
         item.id === cartItem.id
           ? { ...cartItem, quantity: cartItem.quantity + 1 }
           : item,
       );
-      editCart(newCart);
+      updateCart(newCart);
     } else {
       const newValue = value + 1;
       setValue(newValue);
@@ -79,7 +79,7 @@ const Card = ({
           min="0"
           placeholder="0"
           value={quantity ? quantity : value}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => setValue(Number(e.target.value))}
         ></input>
         <button type="button" onClick={() => handleDecrementValueClick(item)}>
           -
