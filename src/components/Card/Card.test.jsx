@@ -5,10 +5,24 @@ import Card from "./Card";
 import userEvent from "@testing-library/user-event";
 
 describe("Card component", () => {
-  function TestWrapper() {
-    const [cart, setCart] = useState([{ id: 1, quantity: 1 }, { id: 2, quantity: 2 }]);
+  function TestWrapper({ initialCart = [] }) {
+    const [cart, setCart] = useState(initialCart);
     const item = { id: 1 };
     const otherItem = cart.find((product) => product.id === 2);
+
+    const handleAddToCartClick = (quantity, item) => {
+      if (quantity <= 0) return;
+      if (cart.some((product) => product.id === item.id)) {
+        const newCart = cart.map((product) =>
+          product.id === item.id
+            ? { ...product, quantity: quantity }
+            : product,
+        );
+        setCart(newCart);
+      } else {
+        setCart([...cart, { ...item, quantity: quantity }]);
+      }
+    };
 
     return (
       <>
@@ -19,38 +33,9 @@ describe("Card component", () => {
           quantity={cart.find((product) => product.id === item.id)?.quantity}
           cart={cart}
           updateCart={setCart}
-        />
-      </>
-    );
-  }
-
-  function TestWrapper2() {
-    const [cart, setCart] = useState([]);
-    const item = { id: 1 };
-
-    const handleAddToCartClick = (quantity, item) => {
-      if (quantity <= 0) return;
-      if (cart.some((product) => product.id === item.id)) {
-        const newCart = cart.map((product) =>
-          product.id === item.id ? { ...product, quantity: quantity } : product,
-        );
-        setCart(newCart);
-      } else {
-        setCart([...cart, { ...item, quantity: quantity }]);
-      }
-    };
-
-    return (
-      <>
-        <Card
-          item={item}
-          quantity={cart.find((product) => product.id === item.id)?.quantity}
-          cart={cart}
-          updateCart={setCart}
           isShopping={true}
           onAddToCartBtnClick={handleAddToCartClick}
         />
-        <span data-testid="cart-length">{cart.length}</span>
       </>
     );
   }
@@ -166,7 +151,7 @@ describe("Card component", () => {
 
   it("adds an item to the cart when 'Add to cart' button is clicked", async () => {
     const user = userEvent.setup();
-    render(<TestWrapper2 />);
+    render(<TestWrapper />);
 
     const addToCartBtn = screen.getByRole("button", { name: "Add to cart" });
     const plusButton = screen.getByRole("button", { name: "+" });
@@ -256,7 +241,14 @@ describe("Card component", () => {
   it("quantity of item in cart increments when '+' button is pressed", async () => {
     const user = userEvent.setup();
 
-    render(<TestWrapper />);
+    render(
+      <TestWrapper
+        initialCart={[
+          { id: 1, quantity: 1 },
+          { id: 2, quantity: 2 },
+        ]}
+      />,
+    );
 
     const plusButton = screen.getByRole("button", { name: "+" });
     await user.click(plusButton);
@@ -267,7 +259,14 @@ describe("Card component", () => {
   it("quantity of item in cart decrements when '-' button is pressed", async () => {
     const user = userEvent.setup();
 
-    render(<TestWrapper />);
+    render(
+      <TestWrapper
+        initialCart={[
+          { id: 1, quantity: 1 },
+          { id: 2, quantity: 2 },
+        ]}
+      />,
+    );
 
     const plusButton = screen.getByRole("button", { name: "+" });
     const minusButton = screen.getByRole("button", { name: "-" });
@@ -279,7 +278,14 @@ describe("Card component", () => {
 
   it("incrementing one item's quantity does not affect another item in the cart", async () => {
     const user = userEvent.setup();
-    render(<TestWrapper />);
+    render(
+      <TestWrapper
+        initialCart={[
+          { id: 1, quantity: 1 },
+          { id: 2, quantity: 2 },
+        ]}
+      />,
+    );
 
     const plusButton = screen.getByRole("button", { name: "+" });
     await user.click(plusButton);
@@ -291,7 +297,14 @@ describe("Card component", () => {
   it("item is removed from cart if quantity is 1 and the '-' button is pressed", async () => {
     const user = userEvent.setup();
 
-    render(<TestWrapper />);
+    render(
+      <TestWrapper
+        initialCart={[
+          { id: 1, quantity: 1 },
+          { id: 2, quantity: 2 },
+        ]}
+      />,
+    );
 
     const minusButton = screen.getByRole("button", { name: "-" });
     await user.click(minusButton);
