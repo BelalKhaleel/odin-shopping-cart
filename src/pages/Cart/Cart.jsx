@@ -28,7 +28,7 @@ const Cart = () => {
               price={item.price}
               quantity={item.quantity}
               cart={cart}
-              editCart={setCart}
+              updateCart={setCart}
               isShopping={isShopping}
             />
           ))}

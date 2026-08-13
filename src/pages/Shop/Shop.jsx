@@ -67,7 +67,7 @@ const Shop = () => {
                   price={cartItem.price}
                   quantity={cartItem.quantity}
                   cart={cart}
-                  editCart={setCart}
+                  updateCart={setCart}
                 />
               );
             } else {
@@ -83,7 +83,7 @@ const Shop = () => {
                   rating={item.rating.rate}
                   price={item.price}
                   cart={cart}
-                  editCart={setCart}
+                  updateCart={setCart}
                   isShopping={isShopping}
                   onAddToCartBtnClick={handleAddToCartClick}
                 />
