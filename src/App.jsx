@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
 import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
 
 function App() {
   const [cart, setCart] = useState([]);
-  const [cartCount, setCartCount] = useState(0);
-  const [isShopping, setIsShopping] = useState(false);
+  const location = useLocation();
+  const isShopping = location.pathname === "/shop";
+  const cartCount = cart.length;
 
   return (
     <>
@@ -17,9 +18,7 @@ function App() {
             cart,
             setCart,
             cartCount,
-            setCartCount,
             isShopping,
-            setIsShopping,
           }}
         />
       </main>

@@ -7,10 +7,8 @@ const Shop = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { cart, setCart, setCartCount, isShopping, setIsShopping } =
+  const { cart, setCart, isShopping } =
     useOutletContext();
-
-  setIsShopping(true);
 
   useEffect(() => {
     fetch("https://fakestoreapi.com/products")
@@ -36,9 +34,6 @@ const Shop = () => {
       setCart([...cart, { ...item, quantity: quantity }]);
     }
   };
-
-  const itemsInCart = cart.length;
-  setCartCount(itemsInCart);
 
   if (loading) return <p>Loading ...</p>;
 
